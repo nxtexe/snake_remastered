@@ -3,7 +3,7 @@
 
 #include <windows.h>
 
-void gotoxy(const short& x, const short& y)
+void gotoxy(const short& x, const short& y)//stolen code
 {
 	COORD p = { x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), p);
@@ -25,10 +25,10 @@ void gotoxy(const int& x, const int& y)
 
 #endif 
 
-
+//for information on what most of these functions do see snake.h
 
 Sprite::Sprite() : character("*"), x(1), y(1), heading(90), length(1) {
-	/* */
+	//
 }
 
 Sprite::Sprite(const std::string& character) : x(1), y(1), heading(90), length(1) {
@@ -68,10 +68,10 @@ void Sprite::move(const char* c, const int& score, const Game& game) {
 			set_heading(-180);
 	}
 	else if (*c == 27) {
-		system("cls");
+		cls;
 		std::cout << "Game Over!" << std::endl;
 		std::cout << "Score: " << score << std::endl;
-		is_running = true;
+		is_running = false;
 		system("pause");
 		exit(0);
 	}
@@ -79,45 +79,44 @@ void Sprite::move(const char* c, const int& score, const Game& game) {
 		system("pause");
 	}
 	int x = xPos(), y = yPos();
-	if (game.get_params(game.LEVEL) == game.BOUNDED) {
-		std::cout << std::boolalpha << (game.get_params(game.LEVEL) == game.BOUNDED);
+	if (game.get_params(game.LEVEL) == game.BOUNDED) {//if player selects bounded level walls should kill snake; broken :(
 		if (heading == 90 && x < 43)//continue in said direction until player moves
 			set_position(x + 1, y);
 		else if (heading == 90 && x >= 43) {
-			system("cls");
+			cls;
 			std::cout << "Game Over!" << std::endl;
 			std::cout << "Score: " << score << std::endl;
-			is_running = true;
+			is_running = false;
 			system("pause");
 			exit(0);
 		}
 		else if (heading == -90 && x > 1)
 			set_position(x - 1, y);
 		else if (heading == -90 && x <= 1) {
-			system("cls");
+			cls;
 			std::cout << "Game Over!" << std::endl;
 			std::cout << "Score: " << score << std::endl;
-			is_running = true;
+			is_running = false;
 			system("pause");
 			exit(0);
 		}
 		else if (heading == 180 && y > 1)
 			set_position(x, y - 1);
 		else if (heading == 180 && y <= 1) {
-			system("cls");
+			cls;
 			std::cout << "Game Over!" << std::endl;
 			std::cout << "Score: " << score << std::endl;
-			is_running = true;
+			is_running = false;
 			system("pause");
 			exit(0);
 		}
 		else if (heading == -180 && y < 25)
 			set_position(x, y + 1);
 		else if (heading == -180 && y >= 25) {
-			system("cls");
+			cls;
 			std::cout << "Game Over!" << std::endl;
 			std::cout << "Score: " << score << std::endl;
-			is_running = true;
+			is_running = false;
 			system("pause");
 			exit(0);
 		}
@@ -172,7 +171,7 @@ bool Game::set_height(const int& height) {
 	return true;
 }
 
-void Game::draw_border() {
+void Game::draw_border() {//draws game borders to represent a square
 	gotoxy(0, 0);
 	for (int i = 0; i < width; i++) {
 		hor_border.render();
@@ -222,7 +221,7 @@ void Game::difficulty_menu() {
 		      << "2. Medium" << std::endl
 			  << "3. Hard\n>";
 }
-void Game::set_params(const int flag, const int val) {
+void Game::set_params(const int flag, const int val) {//takes flag from enum set and value from enums Level, Difficulty and Mode
 	switch (flag) {
 		case MODE:
 			mode = val;
@@ -235,7 +234,7 @@ void Game::set_params(const int flag, const int val) {
 			return;
 	}
 }
-const int Game::get_params(const int flag) const {
+const int Game::get_params(const int flag) const {//takes flag from enum set returns corresponding value store in private member objects level mode and difficulty
 	switch (flag) {
 		case MODE:
 			return mode;
@@ -244,7 +243,6 @@ const int Game::get_params(const int flag) const {
 		case DIFFICULY:
 			return difficulty;
 		default:
-			break;
 			return 0;
 	}
 }
